@@ -1,11 +1,9 @@
 package br.tec.gtech.distributed_bank_transactions.entity;
 
 import java.math.BigDecimal;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import br.tec.gtech.distributed_bank_transactions.distributed.generator.TransactionKeyGenerator;
 import br.tec.gtech.distributed_bank_transactions.enums.TransactionType;
-import br.tec.gtech.distributed_bank_transactions.exception.InvalidBankTransactionException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -28,6 +26,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BankTransaction {
 
+    private TransactionKeyGenerator transactionKeyGenerator;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -46,34 +46,13 @@ public class BankTransaction {
     private LocalDateTime date;
 
     @Transient
-    private String key;
+    private String transactionKey;
 
     @PrePersist
     protected void onCreate() {
         if (this.date == null) {
             this.date = LocalDateTime.now();
         }
-        this.key = generateUniqueKey(); 
-    }
-
-    private String generateUniqueKey() {
-        String input = accountId + "|" + amount + "|" + type + "|" + date;
-        return hash(input);
-    }
-
-    private String hash(String input) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hashBytes = digest.digest(input.getBytes());
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hashBytes) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new InvalidBankTransactionException("Error generating hash", e);
-        }
+        this.transactionKey = transactionKeyGenerator.generateKey(this);
     }
 }

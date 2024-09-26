@@ -2,7 +2,6 @@ package br.tec.gtech.distributed_bank_transactions.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import br.tec.gtech.distributed_bank_transactions.distributed.service.DistributedTransactionService;
 import br.tec.gtech.distributed_bank_transactions.entity.BankTransaction;
 import br.tec.gtech.distributed_bank_transactions.repository.BankTransactionRepository;
@@ -17,7 +16,7 @@ public class BankTransactionService {
 
     @Transactional
     public void createTransaction(BankTransaction bankTransaction) {
-        String key = bankTransaction.getKey();
+        String key = bankTransaction.getTransactionKey();
         // Inicia a transação distribuída
         distributedTransactionService.beginTransaction(key);
 
