@@ -17,10 +17,10 @@ public class DistributedTransactionService {
 
     @Transactional
     public void beginTransaction(String transactionKey) {
-        Optional<TransactionControl> existingTransaction = transactionControlRepository.findByTransactionKey(transactionKey);
+        Optional<TransactionControl> existingTransaction = transactionControlRepository.findByTransactionKeyWithLock(transactionKey);
         if (existingTransaction.isPresent()) {
             TransactionControl transaction = existingTransaction.get();
-            if(transaction.getStatus() == TransactionStatus.COMPLETED){
+            if (transaction.getStatus() == TransactionStatus.COMPLETED) {
                 throw new IllegalStateException("Transaction already completed");
             }
             // A transação já está em progresso
@@ -36,7 +36,7 @@ public class DistributedTransactionService {
 
     @Transactional
     public void completeTransaction(String transactionKey) {
-        TransactionControl transaction = transactionControlRepository.findByTransactionKey(transactionKey)
+        TransactionControl transaction = transactionControlRepository.findByTransactionKeyWithLock(transactionKey)
                 .orElseThrow(() -> new IllegalStateException("Transaction not found"));
 
         transaction.setStatus(TransactionStatus.COMPLETED);
@@ -46,7 +46,7 @@ public class DistributedTransactionService {
 
     @Transactional
     public void failTransaction(String transactionKey) {
-        TransactionControl transaction = transactionControlRepository.findByTransactionKey(transactionKey)
+        TransactionControl transaction = transactionControlRepository.findByTransactionKeyWithLock(transactionKey)
                 .orElseThrow(() -> new IllegalStateException("Transaction not found"));
 
         transaction.setStatus(TransactionStatus.FAILED);
@@ -54,4 +54,3 @@ public class DistributedTransactionService {
         transactionControlRepository.save(transaction);
     }
 }
-
