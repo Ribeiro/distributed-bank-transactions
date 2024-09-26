@@ -6,11 +6,12 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import br.tec.gtech.distributed_bank_transactions.distributed.entity.TransactionControl;
+import static jakarta.persistence.LockModeType.PESSIMISTIC_WRITE;
 
 @Repository
 public interface TransactionControlRepository extends JpaRepository<TransactionControl, Long> {
 
-    @Lock(jakarta.persistence.LockModeType.PESSIMISTIC_WRITE)
+    @Lock(PESSIMISTIC_WRITE)
     @Query("SELECT t FROM TransactionControl t WHERE t.transactionKey = :transactionKey")
     Optional<TransactionControl> findByTransactionKeyWithLock(String transactionKey);
 }
