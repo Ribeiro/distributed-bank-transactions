@@ -104,28 +104,6 @@ Content-Type: application/json
 }
 ```
 
-### Completar Transação
-
-```http
-PUT /api/transactions/complete
-Content-Type: application/json
-
-{
-    "transactionKey": "sua_chave_transacao"
-}
-```
-
-### Falhar Transação
-
-```http
-PUT /api/transactions/fail
-Content-Type: application/json
-
-{
-    "transactionKey": "sua_chave_transacao"
-}
-```
-
 ## Contribuição
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir um issue ou enviar um pull request.
