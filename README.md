@@ -1,5 +1,3 @@
-Aqui está um exemplo de um arquivo `README.md` para o seu projeto de controle de transações distribuídas utilizando Spring Boot, Lombok e JDK 21:
-
 ```markdown
 # Distributed Bank Transactions
 
