@@ -112,11 +112,3 @@ Contribuições são bem-vindas! Sinta-se à vontade para abrir um issue ou envi
 
 Este projeto está licenciado sob a [MIT License](LICENSE).
 ```
-
-### Notas
-
-- Substitua os placeholders, como `seu_usuario`, `sua_senha`, e `sua_chave_transacao`, conforme necessário.
-- Adapte a seção de **Endpoints** para refletir os endpoints reais que você implementou no seu controlador.
-- Inclua informações adicionais relevantes, como instruções de configuração, se necessário.
-
-Se precisar de mais alguma coisa, é só avisar!
